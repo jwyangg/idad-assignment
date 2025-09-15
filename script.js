@@ -1,61 +1,47 @@
-// const canvas = document.getElementById("playingCanvas")
+// Modal popup
+window.onload = () => {
+  const popup = document.getElementById("popup");
+  const closeBtn = document.getElementById("closePopup");
 
-const canvas = document.getElementById("bubbleCanvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let bubbles = [];
-
-class Bubble {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.radius = Math.random() * 30 + 10; // random size between 10–40
-    this.speed = Math.random() * 2 + 1; // float speed
-    this.alpha = 1; // opacity
-    this.hue = Math.random() * 360; // random color
-  }
-
-  update() {
-    this.y -= this.speed;
-    this.alpha -= 0.01;
-  }
-
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.strokeStyle = `hsla(${this.hue}, 100%, 70%, ${this.alpha})`;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-  }
-}
-
-canvas.addEventListener("click", (e) => {
-  // spawn only ONE bubble per click
-  bubbles.push(new Bubble(e.clientX, e.clientY));
-});
-
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  bubbles.forEach((bubble, index) => {
-    bubble.update();
-    bubble.draw();
-
-    if (bubble.alpha <= 0) {
-      bubbles.splice(index, 1); // remove invisible bubbles
-    }
+  // Hiding popup after clicking start
+  closeBtn.addEventListener("click", async () => {
+    popup.style.display = "none";
+    await Tone.start(); // unlock audio context right when "Start" is clicked
   });
+};
 
-  requestAnimationFrame(animate);
-}
+// Tone.js synth linking
+const synth = new Tone.Synth().toDestination();
 
-animate();
+// Container for bubbles
+const container = document.getElementById("bubbleContainer");
 
-// resize canvas dynamically
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+document.body.addEventListener("click", async (e) => {
+  await Tone.start();
+  createBubble(e.clientX, e.clientY);
 });
+
+function createBubble(x, y) {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+
+  // Randomising size of bubbles
+  const size = Math.random() * 80 + 20;
+  bubble.style.width = size + "px";
+  bubble.style.height = size + "px";
+
+  bubble.style.left = x - size / 2 + "px";
+  bubble.style.top = y - size / 2 + "px";
+
+  container.appendChild(bubble);
+
+  // Playing random sounds for each generated bubble click
+  const notes = ["C3", "C4", "D3", "D4", "E3", "E4", "G3", "G4", "A3", "A4"];
+  const note = notes[Math.floor(Math.random() * notes.length)];
+  synth.triggerAttackRelease(note, "8n");
+
+  // Bubble disappearing animation
+  setTimeout(() => {
+    bubble.remove();
+  }, 3000);
+}
