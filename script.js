@@ -1,14 +1,14 @@
-// // Modal popup
-// window.onload = () => {
-//   const popup = document.getElementById("popup");
-//   const closeBtn = document.getElementById("closePopup");
+// Modal popup
+window.onload = () => {
+  const popup = document.getElementById("popup");
+  const closeBtn = document.getElementById("closePopup");
 
-//   // Hiding popup after clicking start
-//   closeBtn.addEventListener("click", async () => {
-//     popup.style.display = "none";
-//     await Tone.start(); // unlock audio context right when "Start" is clicked
-//   });
-// };
+  // Hiding popup after clicking start
+  closeBtn.addEventListener("click", async () => {
+    popup.style.display = "none";
+    await Tone.start(); // unlock audio context right when "Start" is clicked
+  });
+};
 
 // Tone.js synth linking
 const synth = new Tone.Synth().toDestination();
