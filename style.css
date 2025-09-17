@@ -42,7 +42,7 @@ body {
 }
 
 /* Modal popup */
-/* .popup {
+.popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -61,24 +61,24 @@ body {
   text-align: center;
   max-width: 600px;
   color: white;
-} */
+}
 
 /* Welcome design */
-/* .popupContent h2 {
+.popupContent h2 {
   margin-bottom: 1rem;
   font-size: 2.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-} */
+}
 
 /* Explanation text */
-/* .popupContent p {
+.popupContent p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
   line-height: 1.9;
-} */
+}
 
 /* Start button design */
-/* #closePopup {
+#closePopup {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -92,4 +92,4 @@ body {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-} */
+}
