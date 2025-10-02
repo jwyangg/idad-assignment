@@ -10,8 +10,21 @@ window.onload = () => {
   });
 };
 
+//////////////////////////
+
+let synthSettings = {
+  oscillator: {
+    type: "fatsawtooth",
+  },
+  envelope: {
+    attack: 0.5,
+  },
+};
+// let synth = new Tone.synth(synthSettings).toDestination();
+////////////////////////// sawtooth, sine(def), square, triangle (fat is full sound)
+
 // Tone.js synth linking
-const synth = new Tone.Synth().toDestination();
+const synth = new Tone.Synth(synthSettings).toDestination();
 
 // Container for bubbles
 const container = document.getElementById("bubbleContainer");
