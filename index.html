@@ -10,7 +10,7 @@
     />
     <!-- Linking CSS and Tone.js  -->
     <link rel="stylesheet" href="style.css" />
-    <!-- <script src="http://unpkg.com/tone"></script> -->
+    <script src="https://unpkg.com/tone"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,8 +18,7 @@
   </head>
   <body>
     <!-- Generating canvas area to create bubbles  -->
-    <!-- <canvas id="bubbleCanvas"></canvas> -->
-    <div id="bubbleContainer"></div>
+    <canvas id="bubbleCanvas"></canvas>
 
     <!-- Modal Popup  -->
     <div id="popup" class="popup">
@@ -27,16 +26,13 @@
         <h2 class="modak-regular">WELCOME!</h2>
         <p>
           Click anywhere on the page to generate bubbles and click again to pop
-          it! (You actually can't pop yet I haven't gotten to it)
+          it!
         </p>
-        <!-- <p>Please turn up your volume as this page uses sound</p> -->
         <button id="closePopup" class="modak-regular">START</button>
       </div>
     </div>
 
     <!-- Linking JS  -->
-    <script src="https://unpkg.com/tone"></script>
-
     <script src="script.js"></script>
   </body>
 </html>
