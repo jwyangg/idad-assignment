@@ -17,11 +17,12 @@ let synthSettings = {
     type: "fatsawtooth",
   },
   envelope: {
-    attack: 0.5,
+    attack: 0.9,
+    release: 1,
   },
 };
 // let synth = new Tone.synth(synthSettings).toDestination();
-////////////////////////// sawtooth, sine(def), square, triangle (fat is full sound)
+////////////////////////// sawtooth, sine(def), square, triangle (fat is full sound), const filter
 
 // Tone.js synth linking
 const synth = new Tone.Synth(synthSettings).toDestination();
