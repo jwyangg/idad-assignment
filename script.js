@@ -1,16 +1,16 @@
-// --- Modal popup ---
+// ___ Modal popup ___
 window.onload = () => {
   const popup = document.getElementById("popup");
   const closeBtn = document.getElementById("closePopup");
 
-  // Hiding popup after clicking start
+  // Pop Up Disappearing After Button Click
   closeBtn.addEventListener("click", async () => {
     popup.style.display = "none";
     await Tone.start();
   });
 };
 
-// --- Mode toggle setup ---
+// ___ Mode toggle setup ___
 let isMoonMode = false;
 const modeToggle = document.getElementById("modeToggle");
 modeToggle.addEventListener("click", () => {
@@ -19,7 +19,7 @@ modeToggle.addEventListener("click", () => {
   modeToggle.textContent = isMoonMode ? "🌙" : "🌞";
 });
 
-// --- Canvas setup ---
+// ___ Canvas setup ___
 const canvas = document.getElementById("bubbleCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -34,7 +34,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-// --- Tone.js instruments ---
+// ___ Tone.js instruments ___
 const spawnSynth = new Tone.Synth({
   oscillator: { type: "sine" },
   envelope: { attack: 0.002, decay: 0.15, sustain: 0.05, release: 0.2 },
@@ -52,27 +52,27 @@ const popNoise = new Tone.NoiseSynth({
 
 const popSynths = [popMembrane, popPluck, popNoise];
 
-//---Sounds---
+//___Sounds___
 function playSpawnSound(radius) {
   if (isMoonMode) {
-    // Deep/night sounds (unchanged)
-    const minNote = 48; // lower range
+    // Night Mode Sounds
+    const minNote = 48;
     const maxNote = 72;
     const normalized = Math.min(Math.max((radius - 12) / 42, 0), 1);
     const midiNote = maxNote - normalized * (maxNote - minNote);
     const freq = Tone.Frequency(midiNote, "midi").toFrequency();
     spawnSynth.triggerAttackRelease(freq, "8n");
   } else {
-    // Daytime playful spawn – pitch depends on bubble size
-    const minFreq = 300; // low pitch for big bubbles
-    const maxFreq = 900; // high pitch for small bubbles
+    // Day Spawn, Linking Bubble Size to Pitch
+    const minFreq = 300;
+    const maxFreq = 900;
     const normalized = Math.min(Math.max((radius - 12) / 42, 0), 1);
-    const freq = maxFreq - normalized * (maxFreq - minFreq); // smaller radius = higher pitch
+    const freq = maxFreq - normalized * (maxFreq - minFreq);
 
-    // Trigger main note
+    // Trigger Main Note
     spawnSynth.triggerAttackRelease(freq, "16n");
 
-    // Optional tiny follow-up “plink” for shimmer effect
+    // "Plink" Sound
     setTimeout(() => spawnSynth.triggerAttackRelease(freq * 1.2, "32n"), 60);
   }
 }
@@ -80,22 +80,22 @@ function playSpawnSound(radius) {
 function playPopSound(radius) {
   const synth = popSynths[Math.floor(Math.random() * popSynths.length)];
 
-  // Map radius → pitch: small = high, large = low
-  const minNote = 60; // C4 (lower)
-  const maxNote = 84; // C6 (higher)
+  // Pitch Range, Linking Size
+  const minNote = 60;
+  const maxNote = 84;
   const normalized = Math.min(Math.max((radius - 18) / 40, 0), 1);
   const midiNote = maxNote - normalized * (maxNote - minNote);
   const freq = Tone.Frequency(midiNote, "midi").toFrequency();
 
   if (isMoonMode) {
-    // Moon mode (deeper, synthy, neon)
+    // Night Mode Sound
     if (synth === popNoise) {
       synth.triggerAttackRelease("16n");
     } else {
-      synth.triggerAttackRelease(freq * 0.7, "8n"); // slightly lower & longer
+      synth.triggerAttackRelease(freq * 0.7, "8n");
     }
   } else {
-    // Sun mode (bright + cheerful, pitch-based)
+    // Day Mode Sound
     if (synth === popNoise) {
       synth.triggerAttackRelease("16n");
     } else {
@@ -104,14 +104,14 @@ function playPopSound(radius) {
   }
 }
 
-// --- Bubble model ---
+// ___ Bubble model ___
 let bubbles = [];
 class Bubble {
   constructor(x, y) {
     this.x = x;
     this.y = y;
     // this.radius = Math.random() * 40 + 18;
-    const sizeBuckets = [20, 26, 34, 44, 56]; // defined tiers of bubble sizes
+    const sizeBuckets = [20, 26, 34, 44, 56];
     this.radius = sizeBuckets[Math.floor(Math.random() * sizeBuckets.length)];
 
     this.hue = Math.floor(Math.random() * 360);
@@ -128,21 +128,9 @@ class Bubble {
 
   draw(ctx) {
     ctx.save();
-    ///////
-    //   if (isMoonMode) {
-    // // Neon version
-    // const neonColor = `hsla(${this.hue}, 100%, 70%, 0.9)`;
-    // const g = ctx.createRadialGradient(this.x, this.y, this.radius * 0.2, this.x, this.y, this.radius);
-    // g.addColorStop(0, neonColor);
-    // g.addColorStop(1, "transparent");
-    // ctx.beginPath();
-    // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    // ctx.fillStyle = g;
-    // ctx.shadowColor = neonColor;
-    // ctx.shadowBlur = 20;
-    // ctx.fill();
+    // Changing the Colours in Dark Mode
     if (isMoonMode) {
-      const neonHue = (this.hue + 180) % 360; // opposite color hue for contrast
+      const neonHue = (this.hue + 180) % 360;
       const neonColor = `hsla(${neonHue}, 100%, 65%, 0.9)`;
       const g = ctx.createRadialGradient(
         this.x,
@@ -162,7 +150,7 @@ class Bubble {
       ctx.shadowBlur = 25;
       ctx.fill();
     } else {
-      // Keep your cute pastel bubbles
+      // Normal Day Bubbles
       const g = ctx.createRadialGradient(
         this.x - this.radius * 0.4,
         this.y - this.radius * 0.4,
@@ -181,9 +169,8 @@ class Bubble {
       ctx.fillStyle = g;
       ctx.fill();
     }
-    //////
 
-    // Soft pastel iridescent gradient
+    // Soft Pastel Gradient
     const g = ctx.createRadialGradient(
       this.x - this.radius * 0.4,
       this.y - this.radius * 0.4,
@@ -203,7 +190,7 @@ class Bubble {
     ctx.fillStyle = g;
     ctx.fill();
 
-    // Glossy highlight
+    // Highlights for Bubbles
     const highlight = ctx.createRadialGradient(
       this.x - this.radius * 0.3,
       this.y - this.radius * 0.3,
@@ -217,7 +204,7 @@ class Bubble {
     ctx.fillStyle = highlight;
     ctx.fill();
 
-    // Soft outline
+    // Outline for Bubbles
     ctx.strokeStyle = `rgba(255, 255, 255, 0.7)`;
     ctx.lineWidth = Math.max(1, this.radius * 0.05);
     ctx.stroke();
@@ -232,7 +219,7 @@ class Bubble {
   }
 }
 
-// --- Interaction ---
+// ___ Interaction ___
 canvas.addEventListener("click", (e) => {
   const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
@@ -251,7 +238,7 @@ canvas.addEventListener("click", (e) => {
   playSpawnSound(newBubble.radius);
 });
 
-// --- Animation loop ---
+// ___ Animation loop ___
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   bubbles.forEach((b) => {
